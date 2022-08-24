@@ -35,3 +35,9 @@ old/
 
 # venv
 venv/
+
+# notebooks
+notebooks/
+
+# env
+.env
