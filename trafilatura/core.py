@@ -374,7 +374,7 @@ def handle_image(element):
     else:
         # take the first corresponding attribute
         for attr in element.attrib:
-            if attr.startswith('data-src') and is_image_file(element.get(attr)):
+            if is_image_file(element.get(attr)) and (attr.startswith('data-src') or attr.startswith('dsrc') or attr.startswith('data-srcset') or attr.startswith('data-fallback-src')):
                 processed_element.set('src', element.get(attr))
                 break
     # additional data
@@ -856,7 +856,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         cleaned_tree_backup = deepcopy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
+        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links, url)
 
         # comments first, then remove
         if include_comments is True:
