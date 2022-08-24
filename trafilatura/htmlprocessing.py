@@ -10,6 +10,7 @@ import logging
 
 from collections import defaultdict
 from copy import deepcopy
+from urllib.parse import urljoin
 
 from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
@@ -215,7 +216,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     return subtree
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
+def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False, page_url=None):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # delete links for faster processing
     if include_links is False:
@@ -295,6 +296,9 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     # images
     if include_images is True:
         for elem in tree.iter('img'):
+            if page_url is not None:
+                image_url = urljoin(page_url, elem.get('src'))
+                elem.set('src', image_url)
             elem.tag = 'graphic'
     return tree
 
