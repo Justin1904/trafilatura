@@ -339,6 +339,13 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
                         subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
+                        if subchildelem.tag == 'graphic':
+                            if processed_subchild.get('alt') is not None:
+                                subchildelem.set('alt', processed_subchild.get('alt'))
+                            if processed_subchild.get('src') is not None:
+                                subchildelem.set('src', processed_subchild.get('src'))
+                            if processed_subchild.get('title') is not None:
+                                subchildelem.set('title', processed_subchild.get('title'))
                     child.tag = 'done'
             # add to tree
             if newchildelem.text or len(newchildelem) > 0:
